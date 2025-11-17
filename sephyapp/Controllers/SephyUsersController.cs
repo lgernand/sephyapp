@@ -20,8 +20,15 @@ namespace sephyapp.Controllers
         [HttpGet]
         public IActionResult GetAllSephyUsers()
         {
-            var users = dbContext.SephyUsers.ToList();
-            
+            List<SephyUser> users;
+            try
+            {
+                users = dbContext.SephyUsers.ToList();
+            }
+            catch (Exception ex) { 
+                return BadRequest(ex.Message);
+            }
+
             return Ok(users);
         }
 
