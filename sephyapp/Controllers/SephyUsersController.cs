@@ -21,6 +21,7 @@ namespace sephyapp.Controllers
         public IActionResult GetAllSephyUsers()
         {
             var users = dbContext.SephyUsers.ToList();
+            
             return Ok(users);
         }
 
