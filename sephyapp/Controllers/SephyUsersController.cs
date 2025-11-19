@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sephyapp.Data;
@@ -19,6 +20,7 @@ namespace sephyapp.Controllers
         }
 
         [HttpGet]
+        [EnableCors("frontend")]
         public IActionResult GetAllSephyUsers()
         {
             List<SephyUser> users;

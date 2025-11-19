@@ -18,6 +18,6 @@ export class AppComponent {
   sephyUsers$ = this.getUsers();
 
   private getUsers(): Observable<SephyUser[]> {
-    return this.http.get<SephyUser[]>('localhost:5223/api/sephyusers');
+    return this.http.get<SephyUser[]>('https://localhost:7212/api/sephyusers');
   }
 }
