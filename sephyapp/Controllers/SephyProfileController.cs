@@ -8,15 +8,16 @@ using sephyapp.Models.Domain;
 
 namespace sephyapp.Controllers
 {
+    [EnableCors("frontend")]
     [Route("api/[controller]")]
     [ApiController]
     public class SephyProfileController : ControllerBase
     {
-        private readonly SephyDbContext dbContext;
+        private readonly SephyDbContext _dbContext;
 
         public SephyProfileController(SephyDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = dbContext;
         }
 
         [HttpGet]
@@ -25,7 +26,7 @@ namespace sephyapp.Controllers
             List<SephyProfile> users;
             try
             {
-                users = dbContext.SephyProfiles.ToList();
+                users = _dbContext.SephyProfiles.ToList();
             }
             catch (Exception ex) { 
                 return BadRequest(ex.Message);
@@ -45,8 +46,8 @@ namespace sephyapp.Controllers
                 AccountType = request.AccountType
             };
 
-            dbContext.SephyProfiles.Add(domainModelSephyProfile);
-            dbContext.SaveChanges();
+            _dbContext.SephyProfiles.Add(domainModelSephyProfile);
+            _dbContext.SaveChanges();
 
             return Ok(domainModelSephyProfile);
         }
@@ -54,7 +55,7 @@ namespace sephyapp.Controllers
         [HttpPatch]
         public IActionResult UpdateSephyProfile(UpdateSephyProfileRequestDTO request)
         {
-            var SephyProfile = dbContext.SephyProfiles.Where(u => u.Id == request.Id)
+            var SephyProfile = _dbContext.SephyProfiles.Where(u => u.Id == request.Id)
                 .ExecuteUpdate(setters => setters
                     .SetProperty(u => u.Email, request.Email)
                     .SetProperty(u => u.Name, request.Name)
