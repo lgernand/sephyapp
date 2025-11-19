@@ -1,0 +1,5 @@
+@if (sephyUsers$ | async; as sephyUsers) {
+  @for (user of sephyUsers; track $index){
+    <p>{{user.name}}</p>
+  }
+}

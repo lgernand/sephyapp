@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using sephyapp.Data;
 using sephyapp.Models;
 using sephyapp.Models.Domain;
@@ -47,6 +48,18 @@ namespace sephyapp.Controllers
             dbContext.SaveChanges();
 
             return Ok(domainModelSephyUser);
+        }
+
+        [HttpPatch]
+        public IActionResult UpdateSephyUser(UpdateSephyUserRequestDTO request)
+        {
+            var sephyUser = dbContext.SephyUsers.Where(u => u.Id == request.Id)
+                .ExecuteUpdate(setters => setters
+                    .SetProperty(u => u.Email, request.Email)
+                    .SetProperty(u => u.Name, request.Name)
+                    .SetProperty(u => u.AccountType, request.AccountType));
+
+            return Ok(sephyUser);
         }
     }
 }
