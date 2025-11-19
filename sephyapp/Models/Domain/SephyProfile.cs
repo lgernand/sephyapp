@@ -1,6 +1,6 @@
 ﻿namespace sephyapp.Models.Domain
 {
-    public class SephyUser
+    public class SephyProfile
     {
         public Guid Id { get; set; }
         public required string Name { get; set; }

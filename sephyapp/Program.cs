@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using sephyapp.Data;
 using sephyapp.Models.Domain;
@@ -22,9 +23,8 @@ builder.Services.AddOpenApi();
 
 
 builder.Services.AddDbContext<SephyDbContext>();
-//options =>
-//options.UseInMemoryDatabase("SephyDb"));
-//options.);
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<SephyDbContext>();
 
 var app = builder.Build();
 
@@ -35,8 +35,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("frontend");
-
+app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseAuthorization();
 

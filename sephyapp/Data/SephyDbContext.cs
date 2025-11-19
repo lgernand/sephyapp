@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using sephyapp.Models.Domain;
 
 namespace sephyapp.Data
 {
-    public class SephyDbContext : DbContext
+    public class SephyDbContext : IdentityDbContext
     {
         private IConfiguration _config;
 
@@ -17,6 +18,6 @@ namespace sephyapp.Data
             optionsBuilder.UseSqlServer(_config.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"));
         }
 
-        public DbSet<SephyUser> SephyUsers { get; set; }
+        public DbSet<SephyProfile> SephyProfiles { get; set; }
     }
 }

@@ -10,23 +10,23 @@ namespace sephyapp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SephyUsersController : ControllerBase
+    public class SephyProfileController : ControllerBase
     {
         private readonly SephyDbContext dbContext;
 
-        public SephyUsersController(SephyDbContext dbContext)
+        public SephyProfileController(SephyDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
         [HttpGet]
         [EnableCors("frontend")]
-        public IActionResult GetAllSephyUsers()
+        public IActionResult GetAllSephyProfiles()
         {
-            List<SephyUser> users;
+            List<SephyProfile> users;
             try
             {
-                users = dbContext.SephyUsers.ToList();
+                users = dbContext.SephyProfiles.ToList();
             }
             catch (Exception ex) { 
                 return BadRequest(ex.Message);
@@ -36,9 +36,9 @@ namespace sephyapp.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddSephyUser(AddSephyUserRequestDTO request)
+        public IActionResult AddSephyProfile(AddSephyProfileRequestDTO request)
         {
-            var domainModelSephyUser = new SephyUser
+            var domainModelSephyProfile = new SephyProfile
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
@@ -46,22 +46,22 @@ namespace sephyapp.Controllers
                 AccountType = request.AccountType
             };
 
-            dbContext.SephyUsers.Add(domainModelSephyUser);
+            dbContext.SephyProfiles.Add(domainModelSephyProfile);
             dbContext.SaveChanges();
 
-            return Ok(domainModelSephyUser);
+            return Ok(domainModelSephyProfile);
         }
 
         [HttpPatch]
-        public IActionResult UpdateSephyUser(UpdateSephyUserRequestDTO request)
+        public IActionResult UpdateSephyProfile(UpdateSephyProfileRequestDTO request)
         {
-            var sephyUser = dbContext.SephyUsers.Where(u => u.Id == request.Id)
+            var SephyProfile = dbContext.SephyProfiles.Where(u => u.Id == request.Id)
                 .ExecuteUpdate(setters => setters
                     .SetProperty(u => u.Email, request.Email)
                     .SetProperty(u => u.Name, request.Name)
                     .SetProperty(u => u.AccountType, request.AccountType));
 
-            return Ok(sephyUser);
+            return Ok(SephyProfile);
         }
     }
 }

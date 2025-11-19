@@ -1,6 +1,6 @@
 namespace sephyapp.Models;
 
-public class UpdateSephyUserRequestDTO
+public class UpdateSephyProfileRequestDTO
 {
     
     public Guid Id { get; set; }
