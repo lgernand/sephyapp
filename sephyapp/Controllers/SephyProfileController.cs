@@ -20,7 +20,6 @@ namespace sephyapp.Controllers
         }
 
         [HttpGet]
-        [EnableCors("frontend")]
         public IActionResult GetAllSephyProfiles()
         {
             List<SephyProfile> users;
