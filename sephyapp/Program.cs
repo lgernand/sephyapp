@@ -1,10 +1,27 @@
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 using sephyapp.Data;
 using sephyapp.Models.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("bearer", document)] = []
+    });
+});
+
 
 builder.Services.AddCors(options =>
 {
