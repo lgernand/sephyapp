@@ -1,7 +1,6 @@
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { SephyUser } from '../models/SephyUser.model';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms'
@@ -17,10 +16,4 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class AppComponent {
   http = inject(HttpClient);
-
-  sephyUsers$ = this.getUsers();
-
-  private getUsers(): Observable<SephyUser[]> {
-    return this.http.get<SephyUser[]>('https://localhost:7212/api/sephyprofile');
-  }
 }

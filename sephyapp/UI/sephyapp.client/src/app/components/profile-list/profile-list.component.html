@@ -1,1 +1,16 @@
-<p>profile-list works!</p>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let profile of profiles">
+            <td>{{profile.name}}</td>
+            <td>{{profile.email}}</td>
+            <td>{{profile.accountType}}</td>
+        </tr>
+    </tbody>
+</table>
