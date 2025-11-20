@@ -23,12 +23,12 @@ namespace sephyapp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllSephyProfiles()
+        public async Task<IActionResult> GetAllSephyProfiles()
         {
             List<SephyProfile> users;
             try
             {
-                users = _dbContext.SephyProfiles.ToList();
+                users = await _dbContext.SephyProfiles.ToListAsync();
             }
             catch (Exception ex) { 
                 return BadRequest(ex.Message);
@@ -38,7 +38,7 @@ namespace sephyapp.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddSephyProfile(AddSephyProfileRequestDTO request)
+        public async Task<IActionResult> AddSephyProfile(AddSephyProfileRequestDTO request)
         {
             var domainModelSephyProfile = new SephyProfile
             {
@@ -48,22 +48,22 @@ namespace sephyapp.Controllers
                 AccountType = request.AccountType
             };
 
-            _dbContext.SephyProfiles.Add(domainModelSephyProfile);
-            _dbContext.SaveChanges();
+            await _dbContext.SephyProfiles.AddAsync(domainModelSephyProfile);
+            await _dbContext.SaveChangesAsync();
 
             return Ok(domainModelSephyProfile);
         }
 
         [HttpPatch]
-        public IActionResult UpdateSephyProfile(UpdateSephyProfileRequestDTO request)
+        public async Task<IActionResult> UpdateSephyProfile(UpdateSephyProfileRequestDTO request)
         {
-            var SephyProfile = _dbContext.SephyProfiles.Where(u => u.Id == request.Id)
-                .ExecuteUpdate(setters => setters
+            var sephyProfile = await _dbContext.SephyProfiles.Where(u => u.Id == request.Id)
+                .ExecuteUpdateAsync(setters => setters
                     .SetProperty(u => u.Email, request.Email)
                     .SetProperty(u => u.Name, request.Name)
                     .SetProperty(u => u.AccountType, request.AccountType));
 
-            return Ok(SephyProfile);
+            return Ok(sephyProfile);
         }
     }
 }
