@@ -8,7 +8,7 @@ namespace sephyapp.Data
     {
         private IConfiguration _config;
 
-        public SephyDbContext(IConfiguration config)
+        public SephyDbContext(IConfiguration config, DbContextOptions options) : base(options)
         {
             _config = config;
         }

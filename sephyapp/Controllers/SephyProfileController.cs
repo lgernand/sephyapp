@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace sephyapp.Controllers
     [EnableCors("frontend")]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SephyProfileController : ControllerBase
     {
         private readonly SephyDbContext _dbContext;

@@ -4,11 +4,12 @@ import { RouterOutlet } from '@angular/router';
 import { SephyUser } from '../models/SephyUser.model';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AsyncPipe],
+  imports: [RouterOutlet, AsyncPipe, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

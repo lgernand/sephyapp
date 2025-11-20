@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using sephyapp.Data;
@@ -16,6 +17,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddAuthorization();
+
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -25,6 +28,11 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<SephyDbContext>();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<SephyDbContext>();
+
+builder.Services.ConfigureAll<BearerTokenOptions>(options =>
+{
+    options.BearerTokenExpiration = TimeSpan.FromMinutes(30);
+});
 
 var app = builder.Build();
 
@@ -38,8 +46,6 @@ app.UseCors("frontend");
 app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseAuthorization();
 
 app.MapControllers();
