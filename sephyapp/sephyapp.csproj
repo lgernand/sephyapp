@@ -27,4 +27,14 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="UI\sephyapp.client\.postcssrc.json" />
+    <_ContentIncludedByDefault Remove="UI\sephyapp.client\angular.json" />
+    <_ContentIncludedByDefault Remove="UI\sephyapp.client\package-lock.json" />
+    <_ContentIncludedByDefault Remove="UI\sephyapp.client\package.json" />
+    <_ContentIncludedByDefault Remove="UI\sephyapp.client\tsconfig.app.json" />
+    <_ContentIncludedByDefault Remove="UI\sephyapp.client\tsconfig.json" />
+    <_ContentIncludedByDefault Remove="UI\sephyapp.client\tsconfig.spec.json" />
+  </ItemGroup>
+
 </Project>
