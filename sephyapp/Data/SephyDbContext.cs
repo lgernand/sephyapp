@@ -15,7 +15,7 @@ namespace sephyapp.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_config.GetConnectionString("SEPHY_DB_CONNSTRING"));
+            optionsBuilder.UseSqlServer(_config.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"));
         }
 
         public DbSet<SephyProfile> SephyProfiles { get; set; }
