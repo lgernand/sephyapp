@@ -17,7 +17,7 @@ namespace sephyapp.Data
         {
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
             {
-                optionsBuilder.UseSqlServer(_config.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"));
+                optionsBuilder.UseSqlServer(_config.GetConnectionString("SEPHY_DB_CONNSTRING_DEV"));
             }
 
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
