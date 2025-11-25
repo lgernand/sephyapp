@@ -44,6 +44,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<SephyDbContext>();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<SephyDbContext>();
 
 builder.Services.ConfigureAll<BearerTokenOptions>(options =>
@@ -58,6 +59,21 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+using (var scope = app.Services.CreateScope())  
+{  
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();  
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();  
+  
+    string[] roles = {"Pet Groomer", "Salon Manager", "Pet Parent"};
+    foreach (var role in roles)
+    {
+        if (!(await roleManager.RoleExistsAsync(role)))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}  
 
 app.UseCors("frontend");
 app.MapIdentityApi<IdentityUser>();
