@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sephyapp.Data;
@@ -15,36 +16,43 @@ namespace sephyapp.Controllers
     public class SephyProfileController : ControllerBase
     {
         private readonly SephyDbContext _dbContext;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public SephyProfileController(SephyDbContext dbContext)
+        public SephyProfileController(SephyDbContext dbContext,  UserManager<IdentityUser> userManager)
         {
             this._dbContext = dbContext;
+            this._userManager = userManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllSephyProfiles()
+        public async Task<IActionResult> GetSephyProfile()
         {
-            List<SephyProfile> users;
+            var currUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            SephyProfile profile;
             try
             {
-                users = await _dbContext.SephyProfiles.ToListAsync();
+                profile = await _dbContext.SephyProfiles.Where(p => 
+                    p.Id.ToString() == currUser.Id)
+                    .FirstOrDefaultAsync<SephyProfile>();
             }
             catch (Exception ex) { 
                 return BadRequest(ex.Message);
             }
 
-            return Ok(users);
+            return Ok(profile);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSephyProfile(AddSephyProfileRequestDTO request)
+        public async Task<IActionResult> CreateSephyProfile(CreateSephyProfileRequestDTO request)
         {
+            var currUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            
             var domainModelSephyProfile = new SephyProfile
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid(currUser.Id),
                 Name = request.Name,
-                Email = request.Email,
-                AccountType = request.AccountType
+                ZipCode = request.ZipCode,
+                Bio = request.Bio
             };
 
             await _dbContext.SephyProfiles.AddAsync(domainModelSephyProfile);
@@ -53,7 +61,7 @@ namespace sephyapp.Controllers
             return Ok(domainModelSephyProfile);
         }
 
-        [HttpPatch]
+        /*[HttpPatch]
         public async Task<IActionResult> UpdateSephyProfile(UpdateSephyProfileRequestDTO request)
         {
             var sephyProfile = await _dbContext.SephyProfiles.Where(u => u.Id == request.Id)
@@ -63,6 +71,6 @@ namespace sephyapp.Controllers
                     .SetProperty(u => u.AccountType, request.AccountType));
 
             return Ok(sephyProfile);
-        }
+        }*/
     }
 }
