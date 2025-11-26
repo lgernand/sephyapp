@@ -33,7 +33,14 @@ namespace sephyapp.Controllers
             {
                 profile = await _dbContext.SephyProfiles.Where(p => 
                     p.Id.ToString() == currUser.Id)
-                    .FirstOrDefaultAsync<SephyProfile>();
+                    .FirstOrDefaultAsync() ?? new SephyProfile()
+                {
+                    Id =  Guid.Empty,
+                    User = currUser,
+                    Bio = "",
+                    Name = "",
+                    ZipCode = "",
+                };
             }
             catch (Exception ex) { 
                 return BadRequest(ex.Message);
@@ -49,10 +56,11 @@ namespace sephyapp.Controllers
             
             var domainModelSephyProfile = new SephyProfile
             {
-                Id = new Guid(currUser.Id),
+                Id = Guid.NewGuid(),
                 Name = request.Name,
                 ZipCode = request.ZipCode,
-                Bio = request.Bio
+                Bio = request.Bio,
+                User = currUser
             };
 
             await _dbContext.SephyProfiles.AddAsync(domainModelSephyProfile);
