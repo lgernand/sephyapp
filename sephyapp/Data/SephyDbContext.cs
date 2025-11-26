@@ -6,7 +6,7 @@ namespace sephyapp.Data
 {
     public class SephyDbContext : IdentityDbContext
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
 
         public SephyDbContext(IConfiguration config, DbContextOptions options) : base(options)
         {
@@ -27,5 +27,6 @@ namespace sephyapp.Data
         }
 
         public DbSet<SephyProfile> SephyProfiles { get; set; }
+        public DbSet<Pet> Pets { get; set; }
     }
 }

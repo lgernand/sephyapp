@@ -9,7 +9,7 @@ using sephyapp.Models;
 namespace sephyapp.Controllers
 {
     [EnableCors("frontend")]
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class RoleController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace sephyapp.Controllers
             _roleManager = roleManager;
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [HttpGet]
         public async Task<IActionResult> GetRoleNames()
         {
             var allRoles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
