@@ -27,12 +27,12 @@ namespace sephyapp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSephyProfile()
         {
-            var currUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            var currUser = await _userManager.GetUserAsync(HttpContext.User);
             SephyProfile profile;
             try
             {
                 profile = await _dbContext.SephyProfiles.Where(p => 
-                    p.Id.ToString() == currUser.Id)
+                    p.User == currUser)
                     .FirstOrDefaultAsync() ?? new SephyProfile()
                 {
                     Id =  Guid.Empty,
@@ -52,7 +52,7 @@ namespace sephyapp.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSephyProfile(CreateSephyProfileRequestDTO request)
         {
-            var currUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            var currUser = await _userManager.GetUserAsync(HttpContext.User);
             
             var domainModelSephyProfile = new SephyProfile
             {

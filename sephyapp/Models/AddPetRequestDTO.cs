@@ -2,6 +2,7 @@ namespace sephyapp.Models;
 
 public class AddPetRequestDTO
 {
+    public String Name { get; set; }
     public String Species { get; set; }
     public String Breed { get; set; }
     public String Gender { get; set; }

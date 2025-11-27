@@ -14,16 +14,44 @@ namespace sephyapp.Controllers;
 [Authorize]
 public class PetController : ControllerBase
 {
-    [HttpGet]
-    [Authorize]
-    public IActionResult GetPets()
+    private readonly SephyDbContext _dbContext;
+    private readonly UserManager<IdentityUser> _userManager;
+
+    public PetController(SephyDbContext dbContext, UserManager<IdentityUser> userManager)
     {
-        return Ok();
+        _dbContext = dbContext;
+        _userManager = userManager;
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetPets()
+    {
+        var currUser = await _userManager.GetUserAsync(HttpContext.User);
+
+        var pets = await _dbContext.Pets.Where(pet => pet.Owner == currUser).ToListAsync();
+        
+        return Ok(pets);
     }
 
     [HttpPost]
-    public IActionResult AddPet(AddPetRequestDTO pet)
+    public async Task<IActionResult> AddPet(AddPetRequestDTO request)
     {
-        return Ok();
+        var currUser = await _userManager.GetUserAsync(HttpContext.User);
+            
+        var domainModelPet = new Pet
+        {
+            Id = Guid.NewGuid(),
+            Owner = currUser,
+            Name = request.Name,
+            Species = request.Species,
+            Breed = request.Breed,
+            Gender = request.Gender,
+            DateOfBirth =  request.DateOfBirth,
+        };
+
+        await _dbContext.Pets.AddAsync(domainModelPet);
+        await _dbContext.SaveChangesAsync();
+
+        return Ok(domainModelPet);
     }
 }
