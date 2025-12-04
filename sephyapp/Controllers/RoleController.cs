@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sephyapp.Data;
 using sephyapp.Models;
+using sephyapp.Models.DTO;
 
 namespace sephyapp.Controllers
 {

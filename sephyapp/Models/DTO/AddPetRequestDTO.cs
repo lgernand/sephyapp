@@ -1,4 +1,4 @@
-namespace sephyapp.Models;
+namespace sephyapp.Models.DTO;
 
 public class AddPetRequestDTO
 {

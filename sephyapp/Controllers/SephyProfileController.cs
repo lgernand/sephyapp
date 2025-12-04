@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using sephyapp.Data;
 using sephyapp.Models;
 using sephyapp.Models.Domain;
+using sephyapp.Models.DTO;
 
 namespace sephyapp.Controllers
 {
