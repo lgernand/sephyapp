@@ -14,31 +14,39 @@ namespace sephyapp.Controllers;
 [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class PetController : ControllerBase
+public class PetController(SephyDbContext dbContext, UserManager<IdentityUser> userManager)
+    : ControllerBase
 {
-    private readonly SephyDbContext _dbContext;
-    private readonly UserManager<IdentityUser> _userManager;
-
-    public PetController(SephyDbContext dbContext, UserManager<IdentityUser> userManager)
-    {
-        _dbContext = dbContext;
-        _userManager = userManager;
-    }
-    
     [HttpGet]
     public async Task<IActionResult> GetPets()
     {
-        var currUser = await _userManager.GetUserAsync(HttpContext.User);
+        var currUser = await userManager.GetUserAsync(HttpContext.User);
 
-        var pets = await _dbContext.Pets.Where(pet => pet.Owner == currUser).ToListAsync();
+        var pets = await dbContext.Pets.Where(pet => pet.Owner == currUser).ToListAsync();
+
+        List<PetDTO> dtoList = new List<PetDTO>();
+        foreach (var pet in pets)
+        {
+            var dto = new PetDTO()
+            {
+                Id = pet.Id.ToString(),
+                Name = pet.Name,
+                Species = pet.Species,
+                Breed = pet.Breed,
+                Gender = pet.Gender,
+                DateOfBirth = pet.DateOfBirth,
+            };
+            
+            dtoList.Add(dto);
+        }
         
-        return Ok(pets);
+        return Ok(dtoList);
     }
 
     [HttpPost]
     public async Task<IActionResult> AddPet(PetDTO request)
     {
-        var currUser = await _userManager.GetUserAsync(HttpContext.User);
+        var currUser = await userManager.GetUserAsync(HttpContext.User);
             
         var domainModelPet = new Pet
         {
@@ -51,9 +59,19 @@ public class PetController : ControllerBase
             DateOfBirth =  request.DateOfBirth,
         };
 
-        await _dbContext.Pets.AddAsync(domainModelPet);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.Pets.AddAsync(domainModelPet);
+        await dbContext.SaveChangesAsync();
 
-        return Ok(domainModelPet);
+        var dto = new PetDTO()
+        {
+            Id = domainModelPet.Id.ToString(),
+            Name = domainModelPet.Name,
+            Species = domainModelPet.Species,
+            Gender = domainModelPet.Gender,
+            DateOfBirth = domainModelPet.DateOfBirth,
+            Breed = domainModelPet.Breed
+        };
+        
+        return Ok(dto);
     }
 }
