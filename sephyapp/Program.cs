@@ -52,6 +52,13 @@ builder.Services.ConfigureAll<BearerTokenOptions>(options =>
     options.BearerTokenExpiration = TimeSpan.FromMinutes(30);
 });
 
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    options.JsonSerializerOptions.IncludeFields = true;
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

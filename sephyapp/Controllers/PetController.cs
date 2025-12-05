@@ -36,7 +36,7 @@ public class PetController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPet(AddPetRequestDTO request)
+    public async Task<IActionResult> AddPet(PetDTO request)
     {
         var currUser = await _userManager.GetUserAsync(HttpContext.User);
             
