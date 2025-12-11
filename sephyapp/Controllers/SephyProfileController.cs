@@ -14,7 +14,7 @@ namespace sephyapp.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class SephyProfileController(SephyDbContext dbContext, UserManager<IdentityUser> userManager)
+    public class SephyProfileController(SephyDbContext dbContext, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleService)
         : ControllerBase
     {
         [HttpGet]
@@ -44,7 +44,8 @@ namespace sephyapp.Controllers
                 Id = profile.Id.ToString(),
                 Bio = profile.Bio,
                 Name = profile.Name,
-                ZipCode = profile.ZipCode
+                ZipCode = profile.ZipCode,
+                Role = userManager.GetRolesAsync(currUser).Result.FirstOrDefault()
             };
             
             return Ok(dto);
@@ -72,7 +73,8 @@ namespace sephyapp.Controllers
                 Id = domainModelSephyProfile.Id.ToString(),
                 Bio = domainModelSephyProfile.Bio,
                 Name = domainModelSephyProfile.Name,
-                ZipCode = domainModelSephyProfile.ZipCode
+                ZipCode = domainModelSephyProfile.ZipCode,
+                Role = userManager.GetRolesAsync(currUser).Result.FirstOrDefault()
             };
             
             return Ok(dto);

@@ -9,5 +9,6 @@ namespace sephyapp.Models.DTO
         public string? Name { get; set; }
         public string? ZipCode { get; set; }
         public string? Bio { get; set; }
+        public string? Role { get; set; }
     }
 }
