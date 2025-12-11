@@ -9,5 +9,6 @@ namespace sephyapp.Models.Domain
         public required string? Name { get; set; }
         public required string? Bio { get; set; }
         public required string? ZipCode { get; set; }
+        public List<Tag> Tags { get; }
     }
 }

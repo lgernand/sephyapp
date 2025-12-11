@@ -28,5 +28,6 @@ namespace sephyapp.Data
 
         public DbSet<SephyProfile> SephyProfiles { get; set; }
         public DbSet<Pet> Pets { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }

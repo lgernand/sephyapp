@@ -220,6 +220,21 @@ namespace sephyapp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SephyProfileTag", b =>
+                {
+                    b.Property<Guid>("SephyProfilesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("SephyProfilesId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("SephyProfileTag");
+                });
+
             modelBuilder.Entity("sephyapp.Models.Domain.Pet", b =>
                 {
                     b.Property<Guid>("Id")
@@ -262,18 +277,15 @@ namespace sephyapp.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Bio")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -281,6 +293,21 @@ namespace sephyapp.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("SephyProfiles");
+                });
+
+            modelBuilder.Entity("sephyapp.Models.Domain.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -330,6 +357,21 @@ namespace sephyapp.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SephyProfileTag", b =>
+                {
+                    b.HasOne("sephyapp.Models.Domain.SephyProfile", null)
+                        .WithMany()
+                        .HasForeignKey("SephyProfilesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("sephyapp.Models.Domain.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
