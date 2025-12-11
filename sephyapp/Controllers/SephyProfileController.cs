@@ -79,5 +79,53 @@ namespace sephyapp.Controllers
             
             return Ok(dto);
         }
+
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<IActionResult> GetTags(string profileId)
+        {
+            var tags = await dbContext.SephyProfiles
+                .Include(p => p.Tags)
+                .FirstOrDefaultAsync(p => p.Id ==  Guid.Parse(profileId));
+            
+            return Ok(tags);
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> AddTagToProfile(string tagId)
+        { 
+            var currUser = await userManager.GetUserAsync(HttpContext.User);
+            var profile = await dbContext.SephyProfiles.Where(p => 
+                p.User == currUser)
+                .FirstOrDefaultAsync();
+
+            var tag = await dbContext.Tags.Where(t =>
+                t.Id == Guid.Parse(tagId)).FirstOrDefaultAsync();
+
+            if (tag == null || profile == null)
+            {
+                return BadRequest();
+            }
+
+            profile.Tags.Add(tag);
+            await dbContext.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateNewTag([FromQuery]String tagName)
+        {
+            var tag = new Tag()
+            {
+                Id = Guid.NewGuid(),
+                Name = tagName
+            };
+            
+            dbContext.Tags.Add(tag);
+            await dbContext.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
